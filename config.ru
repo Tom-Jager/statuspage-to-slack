@@ -17,7 +17,7 @@ class SlackStatuspageApp < Sinatra::Base
   end
   post "/*" do
     statuspage = JSON.parse(request.body.read)
-    if(!statuspage.has_key?("incident_updates")){
+    if(statuspage.has_key?("incident_updates"))
 
       incident = statuspage["incident"]
       title = incident["name"]
@@ -34,7 +34,12 @@ class SlackStatuspageApp < Sinatra::Base
       
       slack = {text: "Status Page Update", blocks: block_array}
       RestClient.post("https://hooks.slack.com/#{params[:splat].first}", payload: slack.to_json)
-    }
+    else
+      message = "Malformed payload \n #{statuspage.to_json}"
+      puts message
+      slack = {text: message}
+      RestClient.post("https://hooks.slack.com/#{params[:splat].first}", payload: slack.to_json)
+    end
 
   end
 end
