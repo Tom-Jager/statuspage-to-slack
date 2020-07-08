@@ -36,6 +36,7 @@ class SlackStatuspageApp < Sinatra::Base
       
       slack = {text: "Status Page Update", blocks: block_array}
       RestClient.post("https://hooks.slack.com/#{params[:splat].first}", payload: slack.to_json)
+    end
   end
 end
 
