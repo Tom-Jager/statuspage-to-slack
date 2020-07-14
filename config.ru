@@ -19,7 +19,7 @@ class SlackStatuspageApp < Sinatra::Base
     statuspage = JSON.parse(request.body.read)
     slack = {text: "Payload Received \n #{statuspage.to_json}"}
     RestClient.post("https://hooks.slack.com/#{params[:splat].first}", payload: slack.to_json)
-    if(statuspage.has_key?("incident_updates"))
+    if(statuspage.has_key?("incident"))
 
       incident = statuspage["incident"]
       title = incident["name"]
